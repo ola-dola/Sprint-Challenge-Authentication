@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 
 const Users = require("./auth-model");
+const makeToken = require("./token-helper");
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
@@ -23,7 +24,24 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  // implement login
+  const { username, password } = req.body;
+
+  Users.findBy({ username })
+    .then(usr => {
+      if (usr && bcrypt.compareSync(password, usr.password)) {
+        const token = makeToken(usr);
+
+        res.status(200).json({
+          message: `Welcome ${usr.username}`,
+          token
+        });
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Unexpected server error" });
+    });
 });
 
 module.exports = router;

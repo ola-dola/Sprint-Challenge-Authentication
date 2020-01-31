@@ -12,7 +12,14 @@ function findById(id) {
     .first();
 }
 
+function findBy(filter) {
+  return db("users")
+    .where(filter)
+    .first();
+}
+
 module.exports = {
   add,
-  findById
+  findById,
+  findBy
 };
