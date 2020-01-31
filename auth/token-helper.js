@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const secrets = require('../config/secrets');
 
 function makeToken(user) {
   const payload = {
@@ -12,7 +13,7 @@ function makeToken(user) {
 
   const token = jwt.sign(
     payload,
-    process.env.JWT_SECRET || "it rains, it shines. It smokes not.",
+    secrets.jwtSecret,
     options
   );
 
