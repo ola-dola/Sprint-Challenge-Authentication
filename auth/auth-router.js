@@ -16,7 +16,7 @@ router.post("/register", (req, res) => {
 
   Users.add(securedData)
     .then(user => {
-      res.status(201).json(user);
+      res.status(201).json({ message: `Thank you ${user.username}, your account was successfully created`});
     })
     .catch(err => {
       res.status(500).json({ message: "Unexpected server error" });
